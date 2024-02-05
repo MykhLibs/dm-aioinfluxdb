@@ -1,1 +1,1 @@
-from .aioinfluxdb_client import DMAioInfluxDBClient
+from .aioinfluxdb_client import DMAioInfluxDBClient, Point
