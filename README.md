@@ -24,7 +24,15 @@ async def main():
 
     # write one or more points
     await influxdb_client.write("example-bucket", point1)
-    await influxdb_client.write("example-bucket", [point1, point2])
+    # type: bool
+    status = await influxdb_client.write("example-bucket", [point1, point2])
+
+    # return error message in case of error
+    # type: (bool, str)
+    status, err_msg = await influxdb_client.write("example-bucket", point1, return_errors=True)
+
+    # without error logs in case of errors
+    await influxdb_client.write("example-bucket", point1, err_logging=False)
 
 if __name__ == "__main__":
     asyncio.run(main())
@@ -48,8 +56,15 @@ async def main():
     table_res = await influxdb_client.query(query)
     # type: str
     json_res = await influxdb_client.query(query, to="json")
-    # type: dict
-    dict_res = await influxdb_client.query(query, to="dict")
+    # type: list[dict]
+    list_res = await influxdb_client.query(query, to="list")
+
+    # return error message in case of error
+    # type: (list[dict], str)
+    json_res, err_msg = await influxdb_client.query(query, to="json", return_errors=True)
+
+    # without error logs in case of errors
+    res = await influxdb_client.query(query, err_logging=False)
 
 
 if __name__ == "__main__":
