@@ -99,21 +99,27 @@ class DMAioInfluxDBClient:
         async def query_callback(client: InfluxDBClientAsync) -> TableList | None:
             return await client.query_api().query(query=query)
 
-        q_result, error_message = await self.__execute(query_callback, return_errors, err_logging)
+        e_result = await self.__execute(query_callback, return_errors, err_logging)
+        if return_errors:
+            e_result, error_message = e_result
 
-        if to is not None:
-            if q_result is None:
+        if to in ("json", "list"):
+            if e_result is None:
                 if to == "json":
                     result = "null"
                 else:
                     result = []
             else:
-                result = q_result.to_json()
-                if to == "list":
-                    result = json.loads(result)
+                result = e_result.to_json()
+                result = json.loads(result)
+                if to == "json":
+                    result = json.dumps(result, ensure_ascii=False)
         else:
-            result = q_result
-        return result, error_message
+            result = e_result
+
+        if return_errors:
+            result = (result, error_message)
+        return result
 
     @classmethod
     def set_logger(cls, logger) -> None:
