@@ -7,7 +7,7 @@
 
 ## Usage
 
-### Example
+### Write
 
 ```python
 from dm_aioinfluxdb import DMAioInfluxDBClient
@@ -25,6 +25,32 @@ async def main():
     # write one or more points
     await influxdb_client.write("example-bucket", point1)
     await influxdb_client.write("example-bucket", [point1, point2])
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Query
+
+```python
+from dm_aioinfluxdb import DMAioInfluxDBClient
+import asyncio
+
+
+async def main():
+    # create client
+    influxdb_client = DMAioInfluxDBClient("localhost", 8086, "org", "token")
+
+    # write query
+    query = 'from(bucket: "example") |> range(start: -1h) |> filter(fn: (r) => r._measurement == "monitoring" and r._field == "cpu")'
+
+    # type: <class 'influxdb_client.client.flux_table.TableList'>
+    table_res = await influxdb_client.query(query)
+    # type: str
+    json_res = await influxdb_client.query(query, to="json")
+    # type: dict
+    dict_res = await influxdb_client.query(query, to="dict")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
