@@ -60,7 +60,7 @@ async def main():
     list_res = await influxdb_client.query(query, to="list")
 
     # return error message in case of error
-    # type: (list[dict], str)
+    # type: (str, str)
     json_res, err_msg = await influxdb_client.query(query, to="json", return_errors=True)
 
     # without error logs in case of errors
