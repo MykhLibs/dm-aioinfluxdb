@@ -17,9 +17,10 @@ setup(
     url='https://pypi.org/project/dm-aioinfluxdb',
     packages=find_packages(),
     install_requires=[
-        'dm-logger==0.5.2',
         'aiohttp==3.9.2',
-        'influxdb-client==1.39.0',
+        'aiocsv==1.2.5',
+        'dm-logger==0.5.2',
+        'influxdb-client==1.39.0'
     ],
     classifiers=[
         'Programming Language :: Python :: 3.8',
