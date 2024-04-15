@@ -20,10 +20,15 @@ async def main():
 
     # create influxdb points
     point1 = influxdb_client.create_point("example-measurement", {"value": 1.5}, {"tag1": "tag1-value"})
+    # or
     point2 = DMAioInfluxDBClient.create_point("example-measurement", {"value": 0}, {"tag2": "tag2-value"})
 
     # write one or more points
     await influxdb_client.write("example-bucket", point1)
+    # write line protocol record
+    record = "example-measurement,tag1=tag1-value, value=1.5 1713162515"
+    await influxdb_client.write("example-bucket", record)
+
     # type: bool
     status = await influxdb_client.write("example-bucket", [point1, point2])
 

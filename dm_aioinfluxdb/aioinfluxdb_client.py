@@ -72,13 +72,22 @@ class DMAioInfluxDBClient:
     async def write(
         self,
         bucket: str,
-        record: Point | list[Point],
+        record: Point | list[Point] | str,
         return_errors: bool = None,
         err_logging: bool = None
     ) -> bool | (bool, str):
         points = record if isinstance(record, list) else [record]
-        to_line_points = map(lambda p: p.to_line_protocol(), points)
-        points = list(filter(lambda p: p, to_line_points))
+        prepared_points = []
+        for p in points:
+            if isinstance(p, Point):
+                line_p = p.to_line_protocol()
+                if line_p:
+                    prepared_points.append(line_p)
+            elif isinstance(p, str):
+                prepared_points.append(p)
+            else:
+                return False, "Expected record: Point | list[Point] | str"
+
         if not points:
             return False
 
