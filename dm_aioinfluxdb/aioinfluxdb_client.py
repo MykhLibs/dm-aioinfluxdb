@@ -84,7 +84,13 @@ class DMAioInfluxDBClient:
                 if line_p:
                     prepared_points.append(line_p)
             elif isinstance(p, str):
-                prepared_points.append(p)
+                try:
+                    p_parts = p.split(" ")
+                    p_parts[-1] = p_parts[-1].ljust(19, "0")
+                    p = " ".join(p_parts)
+                    prepared_points.append(p)
+                except:
+                    pass
             else:
                 return False, "Expected record: Point | list[Point] | str"
 
@@ -92,7 +98,7 @@ class DMAioInfluxDBClient:
             return False
 
         async def write_callback(client: InfluxDBClientAsync) -> bool:
-            await client.write_api().write(bucket=bucket, record=points)
+            await client.write_api().write(bucket=bucket, record=prepared_points)
             return True
 
         return await self.__execute(write_callback, return_errors, err_logging)
