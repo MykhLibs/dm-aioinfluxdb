@@ -29,7 +29,7 @@ setup(
     ],
     keywords='dm aioinfluxdb',
     project_urls={
-        'GitHub': 'https://github.com/DIMKA4621/dm-aioinfluxdb'
+        'GitHub': 'https://github.com/MykhLibs/dm-aioinfluxdb'
     },
     python_requires='>=3.8'
 )

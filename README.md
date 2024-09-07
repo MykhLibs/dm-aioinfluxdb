@@ -3,7 +3,7 @@
 ## Urls
 
 * [PyPI](https://pypi.org/project/dm-aioinfluxdb)
-* [GitHub](https://github.com/DIMKA4621/dm-aioinfluxdb)
+* [GitHub](https://github.com/MykhLibs/dm-aioinfluxdb)
 
 ## Usage
 
